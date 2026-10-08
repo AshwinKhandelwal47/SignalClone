@@ -1,0 +1,167 @@
+@import "tailwindcss";
+
+/*
+ * Signal Desktop design tokens.
+ * Values recreated from observing Signal Desktop (light + dark themes).
+ * Components use the semantic tokens (--bg-*, --text-*, --bubble-*), never raw palette values.
+ */
+
+:root {
+  /* Brand */
+  --ultramarine: #2c6bed;
+  --ultramarine-light: #6191f3;
+  --ultramarine-dark: #1851b4;
+  --accent-red: #d00b0b;
+
+  /* Gray scale */
+  --gray-02: #f6f6f6;
+  --gray-05: #e9e9e9;
+  --gray-15: #dedede;
+  --gray-20: #c6c6c6;
+  --gray-25: #b9b9b9;
+  --gray-45: #848484;
+  --gray-60: #5e5e5e;
+  --gray-65: #4a4a4a;
+  --gray-75: #3b3b3b;
+  --gray-80: #2e2e2e;
+  --gray-90: #1b1b1b;
+  --gray-95: #121212;
+
+  /* Semantic: light theme */
+  --bg-nav-rail: var(--gray-02);
+  --bg-left-pane: #ffffff;
+  --bg-chat: #ffffff;
+  --bg-hover: var(--gray-05);
+  --bg-selected: var(--gray-15);
+  --bg-input: var(--gray-05);
+  --border: var(--gray-15);
+  --text-primary: var(--gray-90);
+  --text-secondary: var(--gray-60);
+  --text-tertiary: var(--gray-45);
+  --bubble-incoming: var(--gray-05);
+  --bubble-incoming-text: var(--gray-90);
+  --bubble-outgoing: var(--ultramarine);
+  --bubble-outgoing-text: #ffffff;
+  --badge-unread: var(--ultramarine);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg-nav-rail: var(--gray-80);
+    --bg-left-pane: var(--gray-90);
+    --bg-chat: var(--gray-95);
+    --bg-hover: var(--gray-75);
+    --bg-selected: var(--gray-65);
+    --bg-input: var(--gray-75);
+    --border: var(--gray-80);
+    --text-primary: var(--gray-05);
+    --text-secondary: var(--gray-25);
+    --text-tertiary: var(--gray-45);
+    --bubble-incoming: var(--gray-75);
+    --bubble-incoming-text: var(--gray-05);
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg-nav-rail: var(--gray-80);
+  --bg-left-pane: var(--gray-90);
+  --bg-chat: var(--gray-95);
+  --bg-hover: var(--gray-75);
+  --bg-selected: var(--gray-65);
+  --bg-input: var(--gray-75);
+  --border: var(--gray-80);
+  --text-primary: var(--gray-05);
+  --text-secondary: var(--gray-25);
+  --text-tertiary: var(--gray-45);
+  --bubble-incoming: var(--gray-75);
+  --bubble-incoming-text: var(--gray-05);
+}
+
+/* Expose tokens as Tailwind utilities, e.g. bg-chat, text-secondary, bg-bubble-outgoing */
+@theme inline {
+  --color-ultramarine: var(--ultramarine);
+  --color-ultramarine-light: var(--ultramarine-light);
+  --color-ultramarine-dark: var(--ultramarine-dark);
+  --color-accent-red: var(--accent-red);
+  --color-nav-rail: var(--bg-nav-rail);
+  --color-left-pane: var(--bg-left-pane);
+  --color-chat: var(--bg-chat);
+  --color-hover: var(--bg-hover);
+  --color-selected: var(--bg-selected);
+  --color-input: var(--bg-input);
+  --color-border: var(--border);
+  --color-primary: var(--text-primary);
+  --color-secondary: var(--text-secondary);
+  --color-tertiary: var(--text-tertiary);
+  --color-bubble-incoming: var(--bubble-incoming);
+  --color-bubble-incoming-text: var(--bubble-incoming-text);
+  --color-bubble-outgoing: var(--bubble-outgoing);
+  --color-bubble-outgoing-text: var(--bubble-outgoing-text);
+  --color-badge-unread: var(--badge-unread);
+  --color-gray-25: var(--gray-25);
+
+  --font-sans: var(--font-inter), system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Layout metrics */
+  --spacing-nav-rail: 68px;
+  --spacing-left-pane: 320px;
+  --radius-bubble: 18px;
+  --radius-bubble-clustered: 4px;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: var(--bg-chat);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+/* ---------- Shared component classes ---------- */
+@layer components {
+  .icon-button {
+    @apply flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-secondary transition-colors hover:bg-hover hover:text-primary disabled:opacity-40;
+  }
+  .btn-primary {
+    @apply rounded-full bg-ultramarine px-5 py-2 font-medium text-white transition-colors hover:bg-ultramarine-dark disabled:opacity-50;
+  }
+  .btn-secondary {
+    @apply rounded-full bg-hover px-5 py-2 font-medium text-primary transition-colors hover:bg-selected;
+  }
+  .btn-destructive {
+    @apply rounded-full bg-accent-red px-5 py-2 font-medium text-white transition-opacity hover:opacity-90;
+  }
+  .form-field {
+    @apply w-full rounded-lg border border-transparent bg-input px-3 py-2 text-primary outline-none placeholder:text-tertiary focus:border-ultramarine;
+  }
+  .list-row {
+    @apply flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors hover:bg-hover;
+  }
+}
+
+/* Thin, theme-aware scrollbars like Signal Desktop */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--gray-25) transparent;
+}
+
+@keyframes typing-bounce {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  30% {
+    transform: translateY(-3px);
+    opacity: 1;
+  }
+}
+.typing-dot {
+  animation: typing-bounce 1.2s infinite ease-in-out;
+}
